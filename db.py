@@ -20,7 +20,7 @@ def get_login():
     username = input("Username: ")
     password = input("Password: ")
     valid = False
-    while (! valid):
+    while (not valid):
         cursor.execute(" SELECT * FROM users WHERE uid = ? and pwd = ?; ", (username, password)) 
         user = cursor.fetchone()
         if user != None:
