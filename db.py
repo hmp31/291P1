@@ -27,7 +27,7 @@ def get_login():
         if user != None:
             valid = True
         else:
-            printf("Incorrect username or password")
+            print("Incorrect username or password")
             
     connection.commit()
     return user
