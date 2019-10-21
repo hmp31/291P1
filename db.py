@@ -17,10 +17,11 @@ def connect_to_DB():
 def get_login():
     global connection, cursor
     
-    username = input("Username: ")
-    password = input("Password: ")
+
     valid = False
     while (not valid):
+        username = input("Username: ")
+        password = input("Password: ")
         cursor.execute(" SELECT * FROM users WHERE uid = ? and pwd = ?; ", (username, password)) 
         user = cursor.fetchone()
         if user != None:
