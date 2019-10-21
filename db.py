@@ -24,6 +24,7 @@ def get_login():
         password = input("Password: ")
         cursor.execute(" SELECT * FROM users WHERE uid = ? and pwd = ?; ", (username, password)) 
         user = cursor.fetchone()
+
         if user != None:
             valid = True
         else:
@@ -41,9 +42,16 @@ def display_menu(utype):
             print("4 - Process a bill of sale")
             print("5 - Process a payment")
             print("6 - Get a driver abstract")
-            task = 9
-            while (task not in range(1,7)):
-                task = input("Enter a number: ")
+            valid = False
+            
+            while (not valid):
+                task = int(input("Enter a number: "))
+                if (task in range(1,7)):
+                    valid = True
+                else:
+                    print("Please enter a valid option")
+                    
+                
             return task
         
         elif utype == 'o':
