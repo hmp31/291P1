@@ -31,7 +31,7 @@ def get_login():
     connection.commit()
     return user
 
-def dis[laly_menu(utype):
+def display_menu(utype):
         if utype == 'a':
             print("Which task would you like to perform?")
             print("1 - Register a birth")
