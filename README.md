@@ -1,6 +1,27 @@
 # README
  
-## Overview and Usser Guide
+## Overview and User Guide
+
+###Overview
+
+###User Guide
+
+Run the application in the terminal
+```
+$ python3 db.py
+```
+
+Enter the path to the database
+```
+Enter path of database: path/to/database.db
+```
+
+If the database connection is successfuly established, the user will be prompted to enter their username and password
+```
+Username: admin123
+Password: pwd12345
+```
+Depending in the user type (agent or officer), numerical options will appear on screen. Enter the number of the task you wish to perform, and follow the on-screen instructions. 
 
 ## Software Design
 
