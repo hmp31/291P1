@@ -2,9 +2,9 @@
  
 ## Overview and User Guide
 
-###Overview
+### Overview
 
-###User Guide
+### User Guide
 
 Run the application in the terminal
 ```
