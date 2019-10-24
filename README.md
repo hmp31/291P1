@@ -29,4 +29,5 @@ Depending in the user type (agent or officer), numerical options will appear on 
 
 ## Group Work Breakdown
 October 21 - Harrison and Dalton: created meanus and functions for valid user login
+
 October 23 - Harrison and Dalton: created register_birth function with basic error checks and register person function; password no longer appears when typed in   
