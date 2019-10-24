@@ -133,8 +133,35 @@ def register_birth(user_info):
 	
 		   
     
-def register_marriage():
-    pass
+def register_marriage(user_info):
+    print("\n Marriage registration.\n")
+    valid = False
+    while(not valid):
+        reg_no = unique_registration()
+        cursor.execute("SELECT * FROM births WHERE regno = ?", (reg_no, ))
+        if not cursor.fetchone(): # check if any other births have the same reg_no
+            valid = True
+    p1_fname = input("p1 First name: ")
+    p1_lname = input("p1 Last name: ")
+    cursor.execute("SELECT * FROM persons WHERE fname LIKE ? AND lname LIKE?", (p1_fname, p1_lname))
+    p1_info = cursor.fetchone()
+    if p1_info == NONE:
+	print("Person not found in databse. Redirecting to register...")
+	insert_person(p1_fname, p1_lname)
+	
+    p2_fname = input("p2 First name: ")
+    p2_lname = input("p2 Last name: ")
+    cursor.execute("SELECT * FROM persons WHERE fname LIKE ? AND lname LIKE?", (p2_fname, p2_lname))
+    p2_info = cursor.fetchone()
+    if p2_info == NONE:
+	print("Person not found in databse. Redirecting to register...")
+	insert_person(p2_fname, p2_lname)
+    regplace = user_info[5]
+    data = (reg_no, regplace, p1_fname, p1_name, p2_fname, p2_lname)
+	
+    cursor.execute("INSERT INTO marriages VALUES (?, date('now'), ?, ?, ?, ?, ?); ")
+    connection.commit()
+	
 def renew_reg():
     pass
 def bill_of_sale():
