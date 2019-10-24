@@ -1,4 +1,6 @@
 import sqlite3
+import getpass
+import random
 
 connection = None
 cursor = None
@@ -21,7 +23,7 @@ def get_login():
     valid = False
     while (not valid):
         username = input("Username: ")
-        password = input("Password: ")
+        password = getpass.getpass()
         cursor.execute(" SELECT * FROM users WHERE uid = ? and pwd = ?; ", (username, password)) 
         user = cursor.fetchone()
 
@@ -69,8 +71,53 @@ def display_menu(utype):
         
 
         
-def register_birth():
-    pass
+def register_birth(user_info):
+
+    print("\nBirth registry")
+    reg_no = unique_registration()
+    fname = input("First name: ") 
+    lname = input("Last name: ")
+    regplace = user_info[5]
+    gender = input("Gender: ")
+
+    m_fname = input("Mothers first name: ")
+    m_lname = input("Mothers last name: ")
+    cursor.execute(" SELECT * FROM persons WHERE fname = ? and lname = ?; ", (m_fname, m_lname)) 
+    mother = cursor.fetchone()
+    if mother == None:
+        print("Mother's name not found in database. Redirecting to register mother...")
+        insert_person()
+
+
+
+    f_fname = input("Fathers first name: ")
+    f_lname = input ("Fathers last name: ")
+    cursor.execute(" SELECT * FROM persons WHERE fname = ? and lname = ?; ", (f_fname, f_lname)) 
+    father = cursor.fetchone()
+    if father == None:
+        print("Father's name not found in database. Redirecting to register father...")
+        insert_person()
+    
+    cursor.execute("SELECT address, phone FROM persons WHERE fname = ? AND lname = ?", (m_fname, m_lname))
+    mothers_info = cursor.fetchone()
+    address = mothers_info[0]
+    phone = mothers_info[1]
+    bdate = input("Birth date (YYYY-MM-DD): ")
+    bplace = input("Birth place: ")
+	
+    data_person = (fname, lname, bdate, bplace, address, phone)
+
+    cursor.execute("INSERT INTO persons VALUES (?, ?, ?, ? ,?, ?); ", data_person)
+
+    data_birth = (reg_no, fname, lname, regplace, gender, f_fname, f_lname, m_fname, m_lname)
+    cursor.execute("INSERT INTO births VALUES (?, ?, ?, date('now'), ?, ?, ?, ?, ?, ? ); ", data_birth)
+
+    connection.commit()
+
+	
+	
+		   
+    
 def register_marriage():
     pass
 def renew_reg():
@@ -86,6 +133,33 @@ def issue_ticket():
 def find_car_owner():
     pass
 
+def unique_registration():
+	return random.randint(0,9999)
+
+def insert_person():
+    print("Registering a person")
+    fname = input("First name: ") 
+    lname = input("Last name: ")
+    bdate = input("Birth date: ")
+    bplace = input("Birth place: ")
+    address = input("Address: ")
+    phone = input("Phone: ")
+
+    data = [fname, lname, bdate, bplace, address, phone]
+
+    for i in range(2, len(data)):
+        if data[i] == '':
+            data[i] = None
+
+    cursor.execute("INSERT INTO persons VALUES (?, ?, ?, ?, ?, ?);", data)
+
+    cursor.execute("SELECT * FROM persons WHERE fname = ? AND lname = ?", (fname, lname))
+    check = cursor.fetchone()
+    if check != None:
+        print(fname + ' ' + lname + ' successfuly registered.')
+
+    connection.commit()
+
 def main():
     global connection, cursor
     
@@ -94,7 +168,7 @@ def main():
     print("Welcome " + user[3])
     task = display_menu(user[2])
     if task == 1:
-        register_birth()
+        register_birth(user)
     elif task == 2:
         register_marriage()
     elif task == 3:
